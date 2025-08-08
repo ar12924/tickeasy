@@ -19,15 +19,18 @@ TickEasy 是一個基於純 Java Web（Spring MVC + Servlet + JDBC）的線上�
 
 ## ⚙️ 功能模組
 
-| 編號 | 模組                 | 說明                                                         |
-| ---- | -------------------- | ------------------------------------------------------------ |
-| 1    | **Member 會員管理**     | 登入／註冊／登出／編輯<br>JavaMail 驗證信<br> Token 認證      |
-| 2    | **EventDetail 管理**    | Dashboard 資料彙總<br>報名人列表與明細 |
-| 3    | 場次查詢               | 多條件搜尋（日期、場館、演出）並即時顯示剩餘座位               |
-| 4    | 線上購票               |              |
-| 5    | 訂單管理               | 建立／查詢／取消<br>Spring 事務與事件機制                |
-| 6    | 即時通知               | WebSocket 推播                   |
+| 編號 | 模組 | 說明 | 後端實作重點 / 技術關鍵詞 |
+|------|------|------|--------------------------|
+| **1** | **Member 會員管理** | 登入／註冊／登出／編輯會員資料，JavaMail 驗證信，Token 認證 | Spring MVC、Hibernate、SHA-256 密碼雜湊、Token、JavaMail、Redis 登入快取 |
+| **2** | **EventDetail 管理** | Dashboard 銷售統計與報表，報名人列表與明細查詢／匯出 | Spring MVC、MySQL 聚合查詢、ApexCharts、RESTful API |
+| 3 | 場次查詢 | 多條件搜尋（日期、場館、演出）並即時顯示剩餘座位 | Hibernate Criteria、多表關聯查詢、快取優化 |
+| 4 | 線上購票 | 選擇場次與座位，加入購物車，結帳付款 | Spring 事務管理 |
+| 5 | 訂單管理 | 訂單建立／查詢／取消，支援狀態變更 | Spring Transaction |
+| 6 | 即時通知 | WebSocket 即時推播訂單狀態、剩餘票數 | WebSocket、STOMP 協定|
 
+## 📌 負責模組
+- **1. Member 會員管理**
+- **2. EventDetail 管理**
 ---
 
 ## 🚀 演示（Demo）
