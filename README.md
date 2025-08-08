@@ -44,35 +44,58 @@ TickEasy 是一個基於純 Java Web（Spring MVC + Servlet + JDBC）的線上�
 ## 🛠️ 技術棧
 
 - **後端**：Java 8、Spring MVC、Servlet API  
-- **安全**：Spring Security、JWT、JavaMailSender  
+- **安全**：JavaMailSender  
 - **資料庫**：JDBC + HikariCP、MySQL、Redis（分布式鎖、快取）  
-- **前端**：JSP + JSTL、jQuery、Bootstrap、Ajax、WebSocket (STOMP)  
-- **部署**：Tomcat 8.5 / Heroku
+- **前端**：jQuery、Bootstrap、Ajax、WebSocket (STOMP)  
+- **部署**：Tomcat 9.0 / Heroku
 
 ---
 
 ## 📂 專案結構
 
 ```text
-TickEasy/
-├─ src/
-│  ├─ main/
-│  │  ├─ java/com/tickeasy/
-│  │  │    ├─ controller/
-│  │  │    │    ├─ member/
-│  │  │    │    └─ eventdetail/
-│  │  │    ├─ service/
-│  │  │    ├─ dao/
-│  │  │    ├─ entity/
-│  │  │    ├─ filter/
-│  │  │    └─ util/
-│  │  └─ resources/
-│  │       ├─ jdbc.properties
-│  │       └─ application.properties
-│  └─ webapp/
-│      ├─ pages/
-│      └─ WEB-INF/
-└─ pom.xml
+TickEasy
+├─ common/                # 系統共用模組（基礎設施層）
+│   ├─ config/            # Spring MVC、Spring Data、WebSocket、排程等全域設定
+│   ├─ controller/        # 共用 API，例如檔案上傳、系統狀態
+│   ├─ dao/               # 共用資料存取邏輯（基礎 CRUD、Session 管理）
+│   ├─ filter/            # 請求與 Hibernate 過濾器
+│   ├─ listener/          # Hibernate 實體事件監聽
+│   ├─ service/           # 共用商業邏輯，例如驗證、通用查詢
+│   ├─ util/              # 工具類（日期、資料庫連線、雜湊等）
+│   └─ vo/                # 系統常數、狀態列舉與通用 VO
+│
+├─ manager/               # 後台管理端（Admin / Operator）
+│   ├─ event/             # 活動管理主模組
+│   │   ├─ controller/    # 後台活動 API，例如建立、修改、狀態切換
+│   │   ├─ dao/           # 活動資料存取
+│   │   ├─ service/       # 活動商業邏輯（票種管理、關鍵字分類）
+│   │   └─ vo/            # 活動相關資料物件
+│   │
+│   ├─ eventdetail/  ★    # 活動細節與報名人管理（我負責）
+│   │   ├─ controller/    # 提供活動報名名單、票券統計等 API
+│   │   ├─ dao/           # 報名人、票券與訂單資料存取
+│   │   ├─ service/       # 後台報名管理邏輯（搜尋、匯出、統計）
+│   │   └─ vo/            # 報名人資訊、訂單統計 VO
+│   │
+│   └─ member/            # 後台會員管理
+│       ├─ controller/
+│       ├─ dao/
+│       ├─ service/
+│       └─ vo/
+│
+└─ user/                  # 前台會員端（End-User）
+    ├─ member/        ★   # 前台會員系統（我負責）
+    │   ├─ controller/    # 會員註冊、登入、修改資料 API
+    │   ├─ dao/           # 會員資料存取
+    │   ├─ service/       **# 密碼雜湊、驗證信、登入快取（Redis）邏輯**
+    │   └─ vo/            # 會員資料物件（User、Profile、AuthStatus）
+    │
+    └─ ticket/            # 前台票券查詢與購買
+        ├─ controller/
+        ├─ dao/
+        ├─ service/
+        └─ vo/
     - `application.properties` 為範例設定檔，非正式可發信的信箱設定。如需測試郵件功能，請聯絡專案成員或自行準備測試用信箱
 2. **容器設定**
     - MySQL 與 Redis 均透過 Docker 容器建立，程式連線參數需與容器設定一致才能正常存取資料庫
